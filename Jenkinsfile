@@ -35,7 +35,7 @@ pipeline{
         }
         stage("Start Container"){
             steps{
-                CONTAINER_ID = $(docker ps -q -f name=accounts)
+                CONTAINER_ID = $(sh "docker ps -q -f name=accounts")
                 if[[-n $CONTAINER_ID]]; then
                     docker rm $CONTAINER_ID
                 fi

@@ -36,13 +36,13 @@ pipeline{
         stage("Start Container"){
             steps{
                 CONTAINER_ID = sh "docker ps -q -f name=accounts"
-                if[[-n $CONTAINER_ID]]; then
+                if([-n $(CONTAINER_ID)); then
                     docker rm $CONTAINER_ID
                 fi
                 sh "docker run -d -p 8120:8080 accounts:${BUILD_NUMBER}"
 
                 response = $(sh "docker run -d -p 8120:8080 accounts:${BUILD_NUMBER}")
-                if(!$(response)); then
+                if([! $response]); then
                     echo "No violation"
                 else
                     echo "Violation"

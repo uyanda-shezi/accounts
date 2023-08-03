@@ -28,5 +28,15 @@ pipeline{
                 }
             }
         }
+        stage("Build Image"){
+            steps{
+                sh 'docker build -t accounts .'
+            }
+        }
+        stage("Run Image"){
+            steps{
+                sh 'docker-compose up'
+            }
+        }
     }
 }

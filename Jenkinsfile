@@ -42,7 +42,7 @@ pipeline{
                 sh "docker run -d -p 8120:8080 accounts:${BUILD_NUMBER}"
 
                 response = $(sh "docker run -d -p 8120:8080 accounts:${BUILD_NUMBER}")
-                if[[! $response]]; then
+                if(!$(response)); then
                     echo "No violation"
                 else
                     echo "Violation"

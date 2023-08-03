@@ -28,5 +28,26 @@ pipeline{
                 }
             }
         }
+        stage("Build Image"){
+            steps{
+                sh "docker build -t accounts:${BUILD_NUMBER} ."
+            }
+        }
+        stage("Start Container"){
+            steps{
+                CONTAINER_ID = $(docker ps -q -f name=accounts)
+                if[[-n $CONTAINER_ID]]; then
+                    docker rm $CONTAINER_ID
+                fi
+                sh "docker run -d -p 8120:8080 accounts:${BUILD_NUMBER}"
+
+                response = $(sh "docker run -d -p 8120:8080 accounts:${BUILD_NUMBER}")
+                if[[! $response]]; then
+                    echo "No violation"
+                else
+                    echo "Violation"
+                fi
+            }
+        }
     }
 }
